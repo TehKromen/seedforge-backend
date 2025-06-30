@@ -17,7 +17,7 @@ This is the backend of the **SeedForge** project — a REST API for managing bus
 - Spring Security  
 - Spring Data JPA (Hibernate)  
 - PostgreSQL  
-- Maven  
+- Gradle  
 
 ---
 
@@ -26,5 +26,5 @@ This is the backend of the **SeedForge** project — a REST API for managing bus
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/TehKromen/SeedForge-backend.git
-cd SeedForge-backend
+git clone https://github.com/TehKromen/seedforge-backend.git
+cd seedforge-backend
