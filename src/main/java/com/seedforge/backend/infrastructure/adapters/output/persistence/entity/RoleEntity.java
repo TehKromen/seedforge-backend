@@ -1,32 +1,28 @@
-package com.mytic.acepoint.infrastructure.adapters.output.persistence.entity;
+package com.seedforge.backend.infrastructure.adapters.output.persistence.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 import org.hibernate.envers.Audited;
 
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Audited
-@Table(name = "roles")
+@Table(name = "roles",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"code", "organization_id"}))
 @EqualsAndHashCode(callSuper = true)
 public class RoleEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String name;
+    private String code;
     @Column
     private String description;
 }

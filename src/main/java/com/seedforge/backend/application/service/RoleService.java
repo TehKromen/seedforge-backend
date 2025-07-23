@@ -1,56 +1,55 @@
-package com.mytic.acepoint.application.service;
+package com.seedforge.backend.application.service;
 
-import java.util.Optional;
-
+import com.seedforge.backend.application.ports.input.RoleUseCase;
+import com.seedforge.backend.common.exception.NotFoundException;
+import com.seedforge.backend.domain.model.PaginatedResult;
+import com.seedforge.backend.domain.model.Role;
+import com.seedforge.backend.domain.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
-import com.mytic.acepoint.application.dto.RoleDTO;
-import com.mytic.acepoint.application.mapper.RoleApplicationMapper;
-import com.mytic.acepoint.application.ports.input.RoleUseCase;
-import com.mytic.acepoint.domain.model.PaginatedResult;
-import com.mytic.acepoint.domain.model.Role;
-import com.mytic.acepoint.domain.repository.RoleRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService implements RoleUseCase {
 
     private final RoleRepository roleRepository;
-    private final RoleApplicationMapper roleApplicationMapper;
 
-    public RoleService(RoleRepository roleRepository, RoleApplicationMapper roleApplicationMapper) {
+    public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-        this.roleApplicationMapper = roleApplicationMapper;
     }
 
     @Override
-    public RoleDTO createRole(RoleDTO roleDTO) {
-        Role role = roleApplicationMapper.toDomain(roleDTO);
-        Role savedRole = roleRepository.save(role);
-        return roleApplicationMapper.toDTO(savedRole);
-    }
-
-
-    @Override
-    public Optional<RoleDTO> getRoleById(Long id) {
-        return roleRepository.findById(id).map(roleApplicationMapper::toDTO);
+    public List<Role> getAllRoles() {
+        return this.roleRepository.getAllRoles();
     }
 
     @Override
-    public RoleDTO updateRole(Long id, RoleDTO roleDTO) {
-        Role role = roleApplicationMapper.toDomain(roleDTO);
-        roleRepository.update(id, role);
-        return roleApplicationMapper.toDTO(role);
+    public PaginatedResult<Role> getAllRoles(String code, Long organizationId, int page, int pageSize, String sortBy, String sortDirection) {
+        return this.roleRepository.findByFilter(code, organizationId, page, pageSize, sortBy, sortDirection);
+    }
+
+    public Optional<Role> getRoleById(Long id) {
+        return roleRepository.findById(id);
     }
 
     @Override
-    public void deleteRole(Long id) {
+    public Role create(Role role) {
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public Role update(Long id, Role role) {
+        roleRepository.findById(id).orElseThrow(() -> new NotFoundException("Role not found"));
+        role.setId(id);
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (roleRepository.findById(id).isEmpty()) {
+            throw new NotFoundException("Role not found");
+        }
         roleRepository.delete(id);
     }
-
-    @Override
-    public PaginatedResult<RoleDTO> getAllRoles(int page, int size, String sortBy, String sortOrder, String name) {
-        PaginatedResult<Role> usersPage = roleRepository.findAll(page, size, sortBy, sortOrder, name);
-        return usersPage.map(roleApplicationMapper::toDTO);
-    }
-
 }

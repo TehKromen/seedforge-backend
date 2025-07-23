@@ -1,15 +1,17 @@
-package com.mytic.acepoint.domain.repository;
+package com.seedforge.backend.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 
-import com.mytic.acepoint.domain.model.PaginatedResult;
-import com.mytic.acepoint.domain.model.Role;
+import com.seedforge.backend.domain.model.PaginatedResult;
+import com.seedforge.backend.domain.model.Role;
 
 public interface RoleRepository {
 
-    public Optional<Role> findById(Long id);
-    public Role save(Role role);
-    public void delete(Long id);
-    public Role update(Long id, Role role);
-    public PaginatedResult<Role> findAll(int page, int size, String sortBy, String sortOrder, String name);
+    List<Role> getAllRoles();
+    Optional<Role> findById(Long id);
+    PaginatedResult<Role> findByFilter(String code, Long organizationId, int page, int size, String sortBy, String sortOrder);
+    Role save(Role role);
+    void delete(Long id);
+
 }

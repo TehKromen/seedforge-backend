@@ -1,4 +1,5 @@
-package com.mytic.acepoint.domain.model;
+package com.seedforge.backend.domain.model;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,9 @@ public class PaginatedResult<T> {
 
     public <R> PaginatedResult<R> map(Function<? super T, ? extends R> mapper) {
         List<R> mappedContent = content .stream()
-                                       .map(mapper)
-                                       .collect(Collectors.toList());
+                .map(mapper)
+                .collect(Collectors.toList());
         return new PaginatedResult<>(page, size, totalElements, totalPages, mappedContent);
     }
-    
+
 }

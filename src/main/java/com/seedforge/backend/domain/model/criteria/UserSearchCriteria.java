@@ -1,4 +1,4 @@
-package es.magmasomos.coach_access_control.domain.model.criteria;
+package com.seedforge.backend.domain.model.criteria;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

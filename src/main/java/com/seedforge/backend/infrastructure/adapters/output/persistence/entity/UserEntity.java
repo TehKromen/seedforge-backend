@@ -1,32 +1,28 @@
 package com.seedforge.backend.infrastructure.adapters.output.persistence.entity;
 
-import com.seedforge.backend.common.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
-public class UserEntity extends BaseEntity {
-
+@Audited
+@Table(name = "users")
+@EqualsAndHashCode(callSuper = true)
+public class UserEntity extends AuditableEntity{
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
-
-    @Column
-    private String name;
-
-    @Column
+    private String username;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
+    private String firstName;
+    private String lastName;
     private String email;
-
-    @Column
-    private String password;
-
-    @Column
-    private Role role;
 }
